@@ -18,11 +18,13 @@ class _HomeScreenState extends State<HomeScreen> {
   List<ModelData> modelDataList = [];
   Future< void> getPostCommentData() async{
       var response = await http.get(Uri.parse("https://jsonplaceholder.typicode.com/posts/1/comments"));
-      var list = jsonDecode(response.body) as List;
-      
-      setState(() {
+      if(response.statusCode == 200){
+          var list = jsonDecode(response.body) as List;
+        setState(() {
          modelDataList = list.map((n) => ModelData.fromJson(n)).toList() ;
-      });
+        });
+      }
+      
      
     
       debugPrint(modelDataList.toString());
@@ -30,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
   @override
   void initState() {
-     getPostCommentData();
+    getPostCommentData();
     super.initState();
   }
 
